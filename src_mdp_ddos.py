@@ -1,32 +1,15 @@
 from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Dict, List, Tuple
 import json
 import random
-
+import matplotlib.pyplot as plt
 
 State = int
 Action = int
 
-from __future__ import annotations
-from typing import List, Tuple, Dict, TypeAlias
 
-State: TypeAlias = int
-Action: TypeAlias = int
-
-Transition: TypeAlias = Tuple[float, State, float, bool]
-
-
-class TabularMDP:
-    def __init__(self, nS: int, nA: int, gamma: float,
-                 P: Dict[State, Dict[Action, List[Transition]]]):
-        self.nS = nS
-        self.nA = nA
-        self.gamma = gamma
-        self.P = P
-
-    def transitions(self, s: State, a: Action) -> List[Transition]:
-        return self.P[s][a]
 @dataclass
 class TabularMDP:
     """
@@ -35,8 +18,6 @@ class TabularMDP:
       - actions: 0..(nA-1)
       - P[s][a] -> list of (prob, s_next, reward, done)
       - gamma in [0,1)
-
-    This is intentionally simple and beginner-friendly.
     """
     nS: int
     nA: int
@@ -49,7 +30,6 @@ class TabularMDP:
         return self.P[s][a]
 
     def is_terminal(self, s: State) -> bool:
-        # Terminal if all actions only transition to itself with done=True
         for a in range(self.nA):
             for prob, s2, r, done in self.P[s][a]:
                 if not done or s2 != s:
@@ -84,27 +64,7 @@ def build_ddos_style_mdp(
     seed: int = 7,
 ) -> TabularMDP:
     """
-    Small MDP inspired by DDoS mitigation:
-
-    States represent traffic risk levels:
-      0: Low
-      1: Medium
-      2: High
-      3: Critical
-      4: Terminal/Absorbing (e.g., session ended / evaluation)
-
-    Actions:
-      0: ALLOW
-      1: RATE_LIMIT
-      2: BLOCK
-
-    Transition dynamics are simple and stochastic: higher risk tends to stay high,
-    but mitigation actions can reduce risk at some cost.
-
-    Rewards are asymmetric:
-      - Letting an attack through (false negative) is very costly.
-      - Blocking legitimate traffic (false positive) is moderately costly.
-      - Rate-limit is a compromise cost.
+    Small MDP inspired by DDoS mitigation.
     """
     random.seed(seed)
 
@@ -115,14 +75,8 @@ def build_ddos_style_mdp(
     nA = 3
 
     if p_attack_by_state is None:
-        # probability traffic is an attack given state
         p_attack_by_state = [0.01, 0.08, 0.25, 0.55, 0.0]
 
-    # reward design (expected reward per (state, action))
-    # Costs:
-    #  - If allow and it's attack: big negative
-    #  - If block and it's legit: medium negative
-    #  - Rate-limit has smaller costs both ways
     allow_attack_cost = -25.0
     allow_legit_reward = +2.0
 
@@ -132,30 +86,24 @@ def build_ddos_style_mdp(
     ratelimit_legit_reward = +1.0
     ratelimit_attack_cost = -6.0
 
-    # Build P[s][a] = list of (prob, s_next, reward, done)
     P: List[List[List[Tuple[float, int, float, bool]]]] = [
         [[] for _ in range(nA)] for _ in range(nS)
     ]
 
     terminal = 4
 
-    # helper: expected reward given p_attack and chosen action
     def expected_reward(s: int, a: int) -> float:
         p_attack = p_attack_by_state[s]
         p_legit = 1.0 - p_attack
 
-        if a == 0:  # ALLOW
+        if a == 0:
             return p_attack * allow_attack_cost + p_legit * allow_legit_reward
-        if a == 1:  # RATE_LIMIT
+        if a == 1:
             return p_attack * ratelimit_attack_cost + p_legit * ratelimit_legit_reward
-        if a == 2:  # BLOCK
+        if a == 2:
             return p_attack * block_attack_reward + p_legit * block_legit_cost
         raise ValueError("Invalid action")
 
-    # Transition model (simple and interpretable)
-    # ALLOW tends to keep state or drift up a bit
-    # RATE_LIMIT tends to keep state or drift down a bit
-    # BLOCK tends to drift down more, but also can end (terminal) sometimes
     for s in range(nS):
         for a in range(nA):
             if s == terminal:
@@ -164,7 +112,7 @@ def build_ddos_style_mdp(
 
             r = expected_reward(s, a)
 
-            if a == 0:  # ALLOW
+            if a == 0:
                 s_down = max(s - 1, 0)
                 s_same = s
                 s_up = min(s + 1, 3)
@@ -173,7 +121,7 @@ def build_ddos_style_mdp(
                     (0.65, s_same, r, False),
                     (0.20, s_up, r, False),
                 ]
-            elif a == 1:  # RATE_LIMIT
+            elif a == 1:
                 s_down = max(s - 1, 0)
                 s_same = s
                 s_up = min(s + 1, 3)
@@ -182,10 +130,9 @@ def build_ddos_style_mdp(
                     (0.60, s_same, r, False),
                     (0.10, s_up, r, False),
                 ]
-            else:  # BLOCK
+            else:
                 s_down2 = max(s - 2, 0)
                 s_down1 = max(s - 1, 0)
-                # sometimes the episode ends (e.g., connection dropped / handled)
                 P[s][a] = [
                     (0.55, s_down2, r, False),
                     (0.25, s_down1, r, False),
@@ -211,3 +158,33 @@ def load_mdp(path: str) -> TabularMDP:
     with open(path, "r", encoding="utf-8") as f:
         obj = json.load(f)
     return TabularMDP.from_json(obj)
+
+if __name__ == "__main__":
+    mdp = build_ddos_style_mdp()
+    print("MDP created successfully")
+    print("States:", mdp.state_names)
+    print("Actions:", mdp.action_names)
+
+    if __name__ == "__main__":
+    
+     from dp import value_iteration
+
+    mdp = build_ddos_style_mdp()
+
+    print("MDP created successfully")
+    print("States:", mdp.state_names)
+    print("Actions:", mdp.action_names)
+
+    policy, V, Q = value_iteration(mdp)
+
+    print("\nLearned Policy:")
+    for s in range(mdp.nS):
+        print(mdp.state_names[s], "->", mdp.action_names[policy[s]])
+
+    # Plot the state values
+    plt.bar(mdp.state_names, V)
+    plt.title("State Values Learned by the Agent")
+    plt.xlabel("States")
+    plt.ylabel("Value")
+    plt.xticks(rotation=20)
+    plt.show()
