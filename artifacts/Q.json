@@ -1,0 +1,22 @@
+{
+  "Normal Traffic": {
+    "Monitor": 22.5768793008505,
+    "Filter": 21.79466830747832,
+    "Block": 19.11245731410615
+  },
+  "Suspicious Traffic": {
+    "Monitor": 15.644307641943815,
+    "Filter": 20.09711073462595,
+    "Block": 17.1498157221762
+  },
+  "DDoS Attack": {
+    "Monitor": 0.7349444566869693,
+    "Filter": 8.772440530533336,
+    "Block": 9.854642031983994
+  },
+  "Mitigated": {
+    "Monitor": 0.0,
+    "Filter": 0.0,
+    "Block": 0.0
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "Normal Traffic": "Monitor",
+  "Suspicious Traffic": "Filter",
+  "DDoS Attack": "Block",
+  "Mitigated": "Monitor"
+}
