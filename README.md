@@ -2,7 +2,9 @@ Title: Reinforcement Learning for Real-Time DDoS Attack Detection and Mitigation
 
 Seth Yao Alornyo  
 
- School of Electrical Engineering and Computer Science, University of North Dakota, Grand Forks  
+ School of Electrical Engineering and Computer Science  
+ 
+ University of North Dakota, Grand Forks  
  
 Contact: seth.alornyo@ndus.edu  
 
