@@ -1,6 +1,4 @@
-Title: Reinforcement Learning for Real-Time DDoS Attack Detection and Mitigation  
-
-A Markov Decision Process Formulation  
+Title: Reinforcement Learning for Real-Time DDoS Attack Detection and Mitigation A Markov Decision Process Formulation  
 
 Seth Yao Alornyo  
 
