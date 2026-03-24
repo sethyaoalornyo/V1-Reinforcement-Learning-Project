@@ -44,7 +44,7 @@ The project builds upon a prior supervised learning baseline (XGBoost, 98.3% acc
 
 Motivation:
 The DDoS Threat Landscape
-DDoS attacks remain among the most disruptive threats to networked infrastructure. Cloudflare (2024): ~21.3 million DDoS attempts, a 53% year-over-year increase, including a record 5.6 Tbps attack. Vercara (2024): 16,073% growth in attack volume with 270,405 total detected attacks
+DDoS attacks remain among the most disruptive threats to networked infrastructure. Cloudflare (2024),21.3 million DDoS attempts, a 53% year-over-year increase, including a record 5.6 Tbps attack. Vercara (2024): 16,073% growth in attack volume with 270,405 total detected attacks
 These trends expose the inadequacy of static, signature-based defenses and motivate intelligent, adaptive systems.
 Limitations of Supervised Learning
 The prior XGBoost classifier (98.3% accuracy) has the following gaps in a production setting:
