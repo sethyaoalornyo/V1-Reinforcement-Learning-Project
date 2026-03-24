@@ -1,11 +1,17 @@
 Title: Reinforcement Learning for Real-Time DDoS Attack Detection and Mitigation  
 
-A Markov Decision Process Formulation
-Seth Yao Alornyo
- School of Electrical Engineering and Computer Science, University of North Dakota, Grand Forks
-Contact: seth.alornyo@ndus.edu
-Course: EECS 590 — Reinforcement Learning
-Semester: Spring 2025
+A Markov Decision Process Formulation  
+
+Seth Yao Alornyo  
+
+ School of Electrical Engineering and Computer Science, University of North Dakota, Grand Forks  
+ 
+Contact: seth.alornyo@ndus.edu  
+
+Course: EECS 590 — Reinforcement Learning  
+
+Semester: Spring 2025  
+
 Current Version: V1 — Dynamic Programming Foundation
 
 Table of Contents  
