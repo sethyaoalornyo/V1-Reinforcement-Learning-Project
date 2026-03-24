@@ -52,11 +52,16 @@ Limitation	Description
 No temporal modeling	Each flow classified independently, ignoring sequential relationships
 Binary output only	No intermediate actions like rate-limiting
 Symmetric cost assumption	False negatives and false positives treated equally
-Static policy	Model cannot adapt based on cumulative network-wide feedback
-Research Questions
+Static policy	Model cannot adapt based on cumulative network-wide feedback  
+
+Research Questions  
+
 1.	Can a finite MDP accurately model the DDoS detection environment using empirical traffic data?
+   
 2.	Do Dynamic Programming solvers (Policy Iteration and Value Iteration) converge to the same optimal policy, validating the MDP formulation?
+   
 3.	Can model-free RL agents match or exceed supervised classification accuracy while optimizing asymmetric security costs?
+   
 4.	What are the best exploration and approximation strategies for high-dimensional network traffic state spaces?
 
 MDP Formulation: 
