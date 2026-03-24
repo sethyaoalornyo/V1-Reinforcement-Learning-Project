@@ -1,4 +1,5 @@
-Title: Reinforcement Learning for Real-Time DDoS Attack Detection and Mitigation
+Title: Reinforcement Learning for Real-Time DDoS Attack Detection and Mitigation  
+
 A Markov Decision Process Formulation
 Seth Yao Alornyo
  School of Electrical Engineering and Computer Science, University of North Dakota, Grand Forks
