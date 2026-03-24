@@ -18,14 +18,14 @@ Table of Contents
 •	Project Timeline
 •	References
 
-Overview
+Overview:
 This project develops a Reinforcement Learning (RL) framework for real-time detection and mitigation of Distributed Denial of Service (DDoS) attacks on Software-Defined Networks (SDN). The core idea is to reformulate DDoS detection as a sequential decision-making problem using a Markov Decision Process (MDP), enabling an autonomous agent to learn adaptive, cost-sensitive traffic management strategies without relying on static, manually crafted rules.
 The project builds upon a prior supervised learning baseline (XGBoost, 98.3% accuracy on 104,345 SDN flow records) and extends it with a full RL pipeline that considers:
 1.Temporal dependencies across traffic flows
 2.Asymmetric operational costs (false negatives penalized 2× more than false positives)
 3. Intermediate actions (e.g., rate-limiting) beyond binary block/allow
 
-Motivation
+Motivation:
 The DDoS Threat Landscape
 DDoS attacks remain among the most disruptive threats to networked infrastructure. Cloudflare (2024): ~21.3 million DDoS attempts, a 53% year-over-year increase, including a record 5.6 Tbps attack. Vercara (2024): 16,073% growth in attack volume with 270,405 total detected attacks
 These trends expose the inadequacy of static, signature-based defenses and motivate intelligent, adaptive systems.
@@ -42,7 +42,7 @@ Research Questions
 3.	Can model-free RL agents match or exceed supervised classification accuracy while optimizing asymmetric security costs?
 4.	What are the best exploration and approximation strategies for high-dimensional network traffic state spaces?
 
-MDP Formulation
+MDP Formulation:
 The DDoS detection task is formalized as a finite MDP M = (S, A, P, R, γ):
 State Space (S)
 •	8 discriminative flow-level features: byteperflow, pktrate, pairflow, pktperflow, dur, flows, switch, port_no
@@ -65,7 +65,7 @@ R(s, a) = P(atk|s) × R_atk(a) + P(ben|s) × R_ben(a)
 Discount Factor
 γ = 0.95 — effective planning horizon of ~20 time steps, balancing immediate response and long-term stability
 
-Project Versions & Roadmap
+Project Versions & Roadmap:
 V1 — Dynamic Programming Foundation (Complete)
 Implemented:
 Fully specified MDP environment (DDoSEnv) with empirically estimated transition and reward matrices
@@ -93,7 +93,7 @@ Potential edge device deployment with real-time traffic injection
 
 
 
-Dataset
+Dataset:
 SDN-DDoS Dataset
 Property	Value
 Total records	104,345 flow records
@@ -103,7 +103,7 @@ Train split	83,476 records (80%, seed=42)
 Test split	20,869 records (20%, seed=42)
 Split strategy	Stratified
 
-Results (V1)
+Results (V1):
 Test	Status
 MDP state/action/transition shape validity	 Pass
 Reward matrix correctness	 Pass
@@ -127,19 +127,19 @@ PI/VI Policy Agreement	max|V_PI − V_VI| = 0	 Achieved (V1)
 Model-Free Convergence	TD/MC converges within 1000 episodes	Planned (V2)
 Adaptive Cost Weighting	FN penalty > FP (2:1 ratio)	Achieved (V1)
 
-Research Contributions
+Research Contributions:
 A principled MDP formulation for real-time network security, generalizable to other intrusion detection settings
 An empirical comparison of planning-based (DP) vs. learning-based (model-free RL) approaches on real SDN traffic
 A modular, open-source framework serving as a reproducible foundation for deep RL and multi-agent network security research
 
-Project Timeline
+Project Timeline:
 Phase	Milestone	Deliverable	Target
 Phase 1 (V1)	MDP + Dynamic Programming	Policy/Value Iteration, Unit Tests	Complete
 Phase 2 (V2)	Model-Free RL	MC, TD, Sarsa, Q-Learning agents	Weeks 10–12
 Phase 3 (V3)	Deep RL & Exploration	DQN, ε-greedy, UCB strategies	Weeks 13–14
 Phase 4	Evaluation & Report	Final paper, demo, ablation study	Week 15
 
-References
+References:
 1.	O. Yoachimik and J. Pacheco, "Record-breaking 5.6 Tbps DDoS attack and global DDoS trends for 2024 Q4," Cloudflare Blog, Jan. 2025.
 2.	Vercara (DigiCert), "Annual DDoS report 2024: Trends and insights," 2025.
 3.	S. Y. Alornyo, D. Agyapong, J. K. Kibiwott, and E. Kim, "Real-time analysis of DDoS attack detection and mitigation measures using XGBoost machine learning algorithm," Univ. North Dakota, 2025.
