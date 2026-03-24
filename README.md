@@ -59,26 +59,42 @@ Research Questions
 3.	Can model-free RL agents match or exceed supervised classification accuracy while optimizing asymmetric security costs?
 4.	What are the best exploration and approximation strategies for high-dimensional network traffic state spaces?
 
-MDP Formulation:
+MDP Formulation: 
+
 The DDoS detection task is formalized as a finite MDP M = (S, A, P, R, γ):
-State Space (S)
-•	8 discriminative flow-level features: byteperflow, pktrate, pairflow, pktperflow, dur, flows, switch, port_no
-•	Selected via XGBoost feature importance analysis
-•	Continuous features discretized using quantile-based binning (KBinsDiscretizer)
-•	Total discrete states: |S| = 57,600
-Action Space (A)
-Three actions beyond binary classification:
-Action	Value	Description
-Allow	a = 0	Pass traffic through
-Block	a = 1	Drop the flow
-Rate-Limit	a = 2	Throttle uncertain traffic
-Transition Model (P)
+
+State Space (S)  
+
+•	8 discriminative flow-level features: byteperflow, pktrate, pairflow, pktperflow, dur, flows, switch, port_no  
+
+•	Selected via XGBoost feature importance analysis  
+
+•	Continuous features discretized using quantile-based binning (KBinsDiscretizer)  
+
+•	Total discrete states: |S| = 57,600  
+
+Action Space (A)  
+
+Three actions beyond binary classification:  
+
+Action	Value	Description  
+
+1. Allow	a = 0	Pass traffic through
+   
+2. Block	a = 1	Drop the flow
+   
+3. Rate-Limit	a = 2	Throttle uncertain traffic  
+
+Transition Model (P):  
+
 Estimated empirically from sequential structure in the training corpus
 Transitions are action-independent (traffic generation does not depend on agent decisions)
 Unobserved states receive self-loop transitions: P(s | s) = 1.0
 Reward Function (R)
-Asymmetric reward prioritizing security with a 2:1 false-negative-to-false-positive penalty ratio:
-R(s, a) = P(atk|s) × R_atk(a) + P(ben|s) × R_ben(a)
+Asymmetric reward prioritizing security with a 2:1 false-negative-to-false-positive penalty ratio:  
+
+                 R(s, a) = P(atk|s) × R_atk(a) + P(ben|s) × R_ben(a)  
+
 Discount Factor
 γ = 0.95 — effective planning horizon of ~20 time steps, balancing immediate response and long-term stability
 
@@ -86,15 +102,19 @@ Project Versions & Roadmap:
 V1 — Dynamic Programming Foundation (Complete)
 Implemented:
 Fully specified MDP environment (DDoSEnv) with empirically estimated transition and reward matrices
-Policy Iteration (PI): Alternates Bellman expectation evaluation and greedy improvement; converges in 2 to 4 iterations
-                                    V(s) ← R(s, π(s)) + γ Σ_{s′} P(s′|s, π(s)) V(s′)
-                                            π′(s) = argmax_a Q(s, a)
+Policy Iteration (PI): Alternates Bellman expectation evaluation and greedy improvement; converges in 2 to 4 iterations  
+
+                                    V(s) ← R(s, π(s)) + γ Σ_{s′} P(s′|s, π(s)) V(s′)  
+                                    
+                                            π′(s) = argmax_a Q(s, a)  
+                                            
 Value Iteration (VI): Applies Bellman optimality backup directly; converges in ~100–200 iterations
 Both PI and VI converge to identical optimal policies (confirmed: max|V_PI − V_VI| = 0)
 Modular DPAgent with CLI, training pipeline, and YAML-based artifact persistence
 All 6-unit tests pass (MDP correctness, DP convergence, PI/VI agreement)
 
-V2: Model-Free RL Extensions (Planned: Weeks 10–12)
+V2: Model-Free RL Extensions (Planned: Weeks 10–12)  
+
 Introduces agents that learn without a known transition model, enabling online deployment:
 Monte Carlo (MC): Episode-based return estimation without a model
 Temporal-Difference (TD): TD(n) and TD(λ) with eligibility traces for bootstrapped updates
@@ -102,22 +122,25 @@ On-Policy Control: Sarsa(n) and Sarsa(λ) for Q-value estimation under the curre
 Off-Policy Control: Q-Learning for convergence to optimal policy regardless of behavior policy
 Exploration Strategies: ε-greedy, Softmax (Boltzmann), Upper Confidence Bound (UCB)
 
- V3: Deep RL & Function Approximation (Planned: Weeks 13–14)
+V3: Deep RL & Function Approximation (Planned: Weeks 13–14)  
+
 Addresses scalability of tabular methods for large/continuous state spaces:
 Deep Q-Networks (DQN) for neural function approximation
 Potential edge device deployment with real-time traffic injection
 
-
-
-
 Dataset:
 SDN-DDoS Dataset
 Property	Value
-Total records	104,345 flow records
-Features	23 features + binary label
-Class distribution	 60% normal and 40% attack
-Train split	83,476 records (80%, seed=42)
-Test split	20,869 records (20%, seed=42)
+Total records	104,345 flow records  
+
+Features	23 features + binary label  
+
+Class distribution	 60% normal and 40% attack  
+
+Train split	83,476 records (80%, seed=42)  
+
+Test split	20,869 records (20%, seed=42)  
+
 Split strategy	Stratified
 
 Results (V1):
