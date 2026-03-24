@@ -40,7 +40,7 @@ This project develops a Reinforcement Learning (RL) framework for real-time dete
 The project builds upon a prior supervised learning baseline (XGBoost, 98.3% accuracy on 104,345 SDN flow records) and extends it with a full RL pipeline that considers:
 1.Temporal dependencies across traffic flows
 2.Asymmetric operational costs (false negatives penalized 2× more than false positives)
-3. Intermediate actions (e.g., rate-limiting) beyond binary block/allow
+3.Intermediate actions (e.g., rate-limiting) beyond binary block/allow
 
 Motivation:
 The DDoS Threat Landscape
