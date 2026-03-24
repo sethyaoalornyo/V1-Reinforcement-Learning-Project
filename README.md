@@ -8,18 +8,28 @@ Course: EECS 590 — Reinforcement Learning
 Semester: Spring 2025
 Current Version: V1 — Dynamic Programming Foundation
 
-Table of Contents
-•	Overview
-•	Motivation
-•	MDP Formulation
-•	Project Versions & Roadmap
-•	Dataset
-•	Results (V1)
-•	Expected Outcomes
-•	Project Timeline
-•	References
+Table of Contents  
 
-Overview:
+•	Overview  
+
+•	Motivation  
+
+•	MDP Formulation  
+
+•	Project Versions & Roadmap  
+
+•	Dataset  
+
+•	Results (V1)  
+
+•	Expected Outcomes  
+
+•	Project Timeline  
+
+•	References  
+
+
+Overview:  
 This project develops a Reinforcement Learning (RL) framework for real-time detection and mitigation of Distributed Denial of Service (DDoS) attacks on Software-Defined Networks (SDN). The core idea is to reformulate DDoS detection as a sequential decision-making problem using a Markov Decision Process (MDP), enabling an autonomous agent to learn adaptive, cost-sensitive traffic management strategies without relying on static, manually crafted rules.
 The project builds upon a prior supervised learning baseline (XGBoost, 98.3% accuracy on 104,345 SDN flow records) and extends it with a full RL pipeline that considers:
 1.Temporal dependencies across traffic flows
