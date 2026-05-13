@@ -189,10 +189,52 @@ Scripts/checkpoints/dqn/ddos/run1/replay_buffer/ddos/dqn/{fresh,stale}/artifacts
 4.2 Datos
  The README.md file includes quick-start instructions, a description of the environment, a synopsis of the algorithm reasoning, and citations for all collaborators and AI tools used in development. Technical problems.md: Complete bug log with root-cause analysis for issues identified, maintained through final delivery choices.md: This document describes implementation choices per the V3 standard. Requirements.txt: pinned dependencies in reproducible copies 
 
-Reward
+
+
+A. Action Space and Learned Policy 
+The agent has three discrete control actions to choose from: ALLOW: Normal operation, no restriction to the system. RATE_LIMIT: Restriction of system throughput to avoid risk accumulation. BLOCK: Termination or rejection of incoming activity to avoid system failure. The optimal policy π* is obtained by policy iteration as: Low → ALLOW Medium → RATE_LIMIT High → RATE_LIMIT Critical → BLOCK Terminal → ALLOW This policy implies a monotonic escalation strategy, where the increasing risk leads to more and more restrictive interventions. This structure reflects an adaptive control mechanism in line with the design principles of safety-critical systems.
+
+The agent can take three possible discrete control actions:
+
+ALLOW: Allows normal operation without restrictions.
+RATE_LIMIT: restrict system throughput to prevent risk accumulation.
+BLOCK: Prevents or rejects incoming activity to avoid system failure.
+
+The optimal policy $\pi^{*}$ can be obtained by policy iteration:
+
+Low -> ALLOW 
+Medium -> RATE_LIMIT
+High -> RATE_LIMIT 
+Critical -> BLOCK 
+Terminal -> ALLOW
+
+This policy is a monotonic escalation policy, whereby the greater the risk, the more restrictive the intervention. The structure is suggestive of an adaptive control scheme in accordance with safety-critical system design principles.
+
+B. Interpretation as State-Value Function
+
+V (s) is the state-value function and it is the expected sum of discounted rewards starting from s and following the optimal policy thereafter. It weighs immediate rewards against long term consequences of actions.
+
+The computed values are
+
+Low: V = 21.6722 
+Medium: V= 18.2702
+High: V=13.0484
+Critical V = 12.1452 3.
+Terminal V = 0.0000
+
+Larger values correspond to states that are more desirable under optimal control, i.e., the system has more utility in the long run.
+
+C. Reward
 
 The project consider a reinforcement learning (RL) policy found by policy iteration for a risk-sensitive control setting. The system is modeled as a finite Markov Decision Process (MDP) with discrete states representing increasing levels of system load or threat severity. The learned policy assigns each state an optimal action: ALLOW, RATE_LIMIT or BLOCK, based on long-term expected return. The resulting state-value function provides quantitative insight into the desirability of each system state under the optimal policy. We model the system as a finite Markov Decision Process (MDP) with discrete states representing increasing levels of system load or threat severity . The learned policy is a mapping from each state to an optimal action (ALLOW, RATE_LIMIT or BLOCK) that maximizes the long-term expected return. The corresponding state-value function quantitatively offers insight into the desirability of each system state under the optimal policy.
 
+D. Analysis of Results
+
+The value function decreases as system risk increases. The highest value (21.67) is obtained for the Low state, which means that unconstrained operation in safe conditions provides the highest long-term benefit. As the system moves towards these states, the optimal policy applies rate limiting in the Medium and High states. This decreases the immediate throughput but maintains long term stability. Hence the value estimates are slightly lower.
+
+The Critical state is characterized by a sharp decline of the system value and an optimal action of BLOCK. This means the expected reward to continue operating is less than the protective effect of shutdown . This illustrates the value of preventive shutdown systems under extreme circumstances .
+
+The Terminal state has a value of zero, which is in line with the definition of an absorbing endpoint, where no rewards can be accrued further.
 5. Prepared for use
  5.1 Testing Set 
 The repo also contains a 40-test suite (test_v3.py) to cover all classical algorithms, DQN training loop, replay buffer rotation, checkpoint save/load, and saliency output shapes. No test run suffers from any interpreter or compiler bugs. 
