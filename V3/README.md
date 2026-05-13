@@ -1,25 +1,21 @@
-# DDoS Mitigation — Reinforcement Learning Capstone
-**EECS 590 | Version 3 (Final)**  
-**Author:** [Your Name]
+Topic: DDoS Mitigation — Reinforcement Learning Capstone
+EECS 590 Version 3 Final  
+Seth Yao Alornyo
 
----
 
-## Project Summary
+Project Overview
 
 This repository applies reinforcement learning to a DDoS mitigation problem.
-A network controller learns to respond to incoming traffic — choosing to ALLOW,
+A network controller learns to respond to incoming traffic —choosing to ALLOW,
 RATE_LIMIT, or BLOCK — based on the observed threat level. The environment is a
 5-state, 3-action tabular MDP with stochastic transitions and a reward function
 that balances false positives (blocking legitimate users) against false negatives
 (allowing attackers through).
 
-**V3 addition:** Bayesian hyperparameter tuning via Optuna, applied to the DQN agent.
+V3 addition: Bayesian hyperparameter tuning via Optuna, applied to the DQN agent.
 
----
+Repository Structure
 
-## Repository Structure
-
-```
 V3/
 ├── src/
 │   ├── mdp/
@@ -49,11 +45,8 @@ V3/
 ├── tests/
 │   └── test_v3.py               ← Full test suite
 └── requirements.txt
-```
 
----
-
-## Quick Start
+ Quick Start
 
 ```bash
 # Install dependencies
@@ -76,11 +69,9 @@ python scripts/run_dqn.py --use-tuned-params
 
 # Run tests
 python -m pytest tests/test_v3.py -v
-```
 
----
 
-## Environment
+The Capstone Project Environment
 
 | Component  | Detail                                              |
 |------------|-----------------------------------------------------|
@@ -90,14 +81,13 @@ python -m pytest tests/test_v3.py -v
 | Reward     | Blend of attack cost and legitimate traffic benefit |
 | Terminal   | State 4 absorbs all transitions                     |
 
----
 
-## V3: Bayesian Hyperparameter Tuning
+ V3: Bayesian Hyperparameter Tuning
 
 The key V3 addition is automated hyperparameter optimisation using
 [Optuna](https://optuna.org/) with the Tree-structured Parzen Estimator (TPE).
 
-### Why Bayesian vs Grid/Random Search
+Why Bayesian vs Grid/Random Search
 
 | Method | Trials needed | Uses prior results? |
 |--------|---------------|---------------------|
@@ -105,7 +95,7 @@ The key V3 addition is automated hyperparameter optimisation using
 | Random | ~100+         | No                  |
 | TPE    | 30–50         | Yes                 |
 
-### Hyperparameters Tuned
+Hyperparameters Tuned
 
 - Learning rate (`lr`)
 - Network size (`hidden_dim`)
@@ -116,33 +106,28 @@ The key V3 addition is automated hyperparameter optimisation using
 
 Results are saved to `artifacts/tuning/best_params.json`.
 
----
+The Algorithms Used
 
-## Algorithms
+Classical (Model-Based)
+- Policy Iteration — evaluate → greedy improve → repeat
+- Value Iteration — Bellman optimality operator to convergence
 
-### Classical (Model-Based)
-- **Policy Iteration** — evaluate → greedy improve → repeat
-- **Value Iteration** — Bellman optimality operator to convergence
+Deep RL
+- DQN — experience replay + periodic target network sync
+- Dueling DQN — Q(s,a) = V(s) + A(s,a) − mean A(s,a)
 
-### Deep RL
-- **DQN** — experience replay + periodic target network sync
-- **Dueling DQN** — Q(s,a) = V(s) + A(s,a) − mean A(s,a)
+V3 Addition
+- Bayesian Hyperparameter Tuning — Optuna TPE over DQN hyperparameter space
 
-### V3 Addition
-- **Bayesian Hyperparameter Tuning** — Optuna TPE over DQN hyperparameter space
-
-For the full justification of what was and was not implemented, see
+For the full justification of what was and was not implemented,Can be found at:
 [`docs/v3_decisions.md`](docs/v3_decisions.md).
 
----
 
-## Citations and AI Tool Usage
+Citations and AI Tool Usage
 
-See [`docs/citations.md`](docs/citations.md) for full references and
+Can be found at [`docs/citations.md`](docs/citations.md) for full references and
 a log of AI tool usage during development.
 
----
+Known Issues
 
-## Known Issues
-
-See [`docs/technical-challenges.md`](docs/technical-challenges.md).
+Can be found at [`docs/technical-challenges.md`](docs/technical-challenges.md).
