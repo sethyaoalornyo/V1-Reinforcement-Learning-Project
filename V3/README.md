@@ -189,6 +189,9 @@ Scripts/checkpoints/dqn/ddos/run1/replay_buffer/ddos/dqn/{fresh,stale}/artifacts
 4.2 Datos
  The README.md file includes quick-start instructions, a description of the environment, a synopsis of the algorithm reasoning, and citations for all collaborators and AI tools used in development. Technical problems.md: Complete bug log with root-cause analysis for issues identified, maintained through final delivery choices.md: This document describes implementation choices per the V3 standard. Requirements.txt: pinned dependencies in reproducible copies 
 
+Reward
+
+The project consider a reinforcement learning (RL) policy found by policy iteration for a risk-sensitive control setting. The system is modeled as a finite Markov Decision Process (MDP) with discrete states representing increasing levels of system load or threat severity. The learned policy assigns each state an optimal action: ALLOW, RATE_LIMIT or BLOCK, based on long-term expected return. The resulting state-value function provides quantitative insight into the desirability of each system state under the optimal policy. We model the system as a finite Markov Decision Process (MDP) with discrete states representing increasing levels of system load or threat severity . The learned policy is a mapping from each state to an optimal action (ALLOW, RATE_LIMIT or BLOCK) that maximizes the long-term expected return. The corresponding state-value function quantitatively offers insight into the desirability of each system state under the optimal policy.
 
 5. Prepared for use
  5.1 Testing Set 
